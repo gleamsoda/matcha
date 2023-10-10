@@ -1,7 +1,6 @@
 package main
 
 import (
-	"errors"
 	"os"
 
 	"github.com/rs/zerolog"
@@ -9,10 +8,12 @@ import (
 	"github.com/spf13/cobra"
 
 	"matcha/internal/config"
+	"matcha/internal/driver/http"
 )
 
 func main() {
 	cmd := NewCmdRoot()
+	cmd.AddCommand(NewCmdServer())
 	if err := cmd.Execute(); err != nil {
 		log.Error().Err(err).Msg("failed to execute command")
 		os.Exit(1)
@@ -30,9 +31,16 @@ func NewCmdRoot() *cobra.Command {
 			}
 			return nil
 		},
+	}
+	return cmd
+}
+
+func NewCmdServer() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "server",
+		Short: "Run HTTP server",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Info().Msg("Hello, world!")
-			return errors.New("not implemented")
+			return http.Run(cmd.Context())
 		},
 	}
 	return cmd

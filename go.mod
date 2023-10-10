@@ -4,8 +4,10 @@ go 1.21.2
 
 require (
 	github.com/caarlos0/env/v9 v9.0.0
+	github.com/go-chi/chi/v5 v5.0.10
 	github.com/joho/godotenv v1.5.1
 	github.com/rs/zerolog v1.31.0
+	github.com/samber/do v1.6.0
 	github.com/spf13/cobra v1.7.0
 )
 

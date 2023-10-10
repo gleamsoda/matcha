@@ -8,7 +8,8 @@ import (
 )
 
 type Config struct {
-	Environment string `env:"ENVIRONMENT"`
+	Environment   string `env:"ENVIRONMENT"`
+	ServerAddress string `env:"SERVER_ADDRESS"`
 }
 
 // Get reads configuration from file or environment variables.
