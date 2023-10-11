@@ -8,7 +8,7 @@ import (
 	"github.com/spf13/cobra"
 
 	"matcha/internal/config"
-	"matcha/internal/driver/http"
+	"matcha/internal/driver/api"
 )
 
 func main() {
@@ -38,9 +38,9 @@ func NewCmdRoot() *cobra.Command {
 func NewCmdServer() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "server",
-		Short: "Run HTTP server",
+		Short: "Run API server",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return http.Run(cmd.Context())
+			return api.Run(cmd.Context())
 		},
 	}
 	return cmd

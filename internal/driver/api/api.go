@@ -1,4 +1,4 @@
-package http
+package api
 
 import (
 	"context"
@@ -48,5 +48,6 @@ func NewContainer(cfg config.Config) *do.Injector {
 	i := do.New()
 	do.Provide(i, NewServer)
 	do.ProvideNamedValue(i, "ServerAddress", cfg.ServerAddress)
+	do.Provide(i, NewResolver)
 	return i
 }

@@ -1,0 +1,4 @@
+.PHONY: gqlgen
+
+gqlgen:
+	@gqlgen
