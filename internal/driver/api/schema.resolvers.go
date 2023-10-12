@@ -7,14 +7,20 @@ package api
 import (
 	"context"
 	"fmt"
+
 	"matcha/internal/core"
 	"matcha/internal/driver/api/gen"
 	"matcha/internal/driver/api/model"
+	"matcha/internal/pkg/password"
 )
 
 // CreateUser is the resolver for the createUser field.
 func (r *mutationResolver) CreateUser(ctx context.Context, input model.CreateUser) (*core.User, error) {
-	u := core.NewUser(input.Username, input.Email, input.Password)
+	pwd, err := password.Hash(input.Password)
+	if err != nil {
+		return nil, err
+	}
+	u := core.NewUser(input.Username, input.Email, pwd)
 	r.users = append(r.users, u)
 	return u, nil
 }
