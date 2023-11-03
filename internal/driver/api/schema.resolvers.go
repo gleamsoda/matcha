@@ -6,23 +6,21 @@ package api
 
 import (
 	"context"
-	"fmt"
+
+	uuid "github.com/gofrs/uuid/v5"
 
 	"matcha/internal/core"
-	"matcha/internal/driver/api/gen"
+	"matcha/internal/driver/api/gqlgen"
 	"matcha/internal/driver/api/model"
-	"matcha/internal/pkg/password"
 )
 
 // CreateUser is the resolver for the createUser field.
 func (r *mutationResolver) CreateUser(ctx context.Context, input model.CreateUser) (*core.User, error) {
-	pwd, err := password.Hash(input.Password)
-	if err != nil {
-		return nil, err
-	}
-	u := core.NewUser(input.Username, input.Email, pwd)
-	r.users = append(r.users, u)
-	return u, nil
+	return r.createUser.Execute(ctx, &core.CreateUserParams{
+		Username: input.Username,
+		Email:    input.Email,
+		Password: input.Password,
+	})
 }
 
 // CreateIssue is the resolver for the createIssue field.
@@ -33,14 +31,8 @@ func (r *mutationResolver) CreateIssue(ctx context.Context, input model.CreateIs
 }
 
 // User is the resolver for the user field.
-func (r *queryResolver) User(ctx context.Context, id string) (*core.User, error) {
-	fn := func(u *core.User) bool { return u.ID == id }
-	for i := range r.users {
-		if u := r.users[i]; fn(u) {
-			return u, nil
-		}
-	}
-	return nil, fmt.Errorf("not found: User - user")
+func (r *queryResolver) User(ctx context.Context, id uuid.UUID) (*core.User, error) {
+	return r.getUser.Execute(ctx, id)
 }
 
 // Issues is the resolver for the issues field.
@@ -48,11 +40,11 @@ func (r *queryResolver) Issues(ctx context.Context) ([]*core.Issue, error) {
 	return r.issues, nil
 }
 
-// Mutation returns gen.MutationResolver implementation.
-func (r *Resolver) Mutation() gen.MutationResolver { return &mutationResolver{r} }
+// Mutation returns gqlgen.MutationResolver implementation.
+func (r *Resolver) Mutation() gqlgen.MutationResolver { return &mutationResolver{r} }
 
-// Query returns gen.QueryResolver implementation.
-func (r *Resolver) Query() gen.QueryResolver { return &queryResolver{r} }
+// Query returns gqlgen.QueryResolver implementation.
+func (r *Resolver) Query() gqlgen.QueryResolver { return &queryResolver{r} }
 
 type mutationResolver struct{ *Resolver }
 type queryResolver struct{ *Resolver }

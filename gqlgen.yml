@@ -5,8 +5,8 @@ schema:
 # Where should the generated server code go?
 exec:
   layout: follow-schema
-  dir: internal/driver/api/gen
-  package: gen
+  dir: internal/driver/api/gqlgen
+  package: gqlgen
 
 # Enable Apollo federation support
 # federation:
@@ -15,7 +15,7 @@ exec:
 
 # Where should any generated models go?
 model:
-  filename: internal/driver/api/model/gen.go
+  filename: internal/driver/api/model/model.go
   package: model
   # Optional: Pass in a path to a new gotpl template to use for generating the models
   # model_template: [your/path/model.gotpl]
@@ -107,7 +107,7 @@ models:
       - github.com/99designs/gqlgen/graphql.Int32
   UUID:
     model:
-      - github.com/99designs/gqlgen/graphql.UUID
+      - matcha/internal/pkg/graphql.UUID
   User:
     model: matcha/internal/core.User
   Issue:

@@ -1,17 +1,17 @@
 type User {
-  id: ID!
+  id: UUID!
   username: String!
   email: String!
 }
 
 type Issue {
-  id: ID!
+  id: UUID!
   title: String!
   description: String!
 }
 
 type Query {
-  user(id: ID!): User!
+  user(id: UUID!): User!
   issues: [Issue!]!
 }
 
@@ -30,3 +30,5 @@ type Mutation {
   createUser(input: CreateUser!): User!
   createIssue(input: CreateIssue!): Issue!
 }
+
+scalar UUID

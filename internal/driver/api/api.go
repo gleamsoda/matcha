@@ -12,15 +12,22 @@ import (
 	"github.com/samber/do"
 
 	"matcha/internal/config"
+	"matcha/internal/core/repository"
+	"matcha/internal/pkg/broom"
+	"matcha/internal/pkg/db"
 )
 
 func Run(ctx context.Context) error {
+	defer broom.Clean()
 	notifyCtx, notifyCancel := signal.NotifyContext(ctx, syscall.SIGINT, syscall.SIGTERM)
 	defer notifyCancel()
 	serverCtx, serverCancel := context.WithCancelCause(ctx)
 	defer serverCancel(nil)
 
-	i := NewContainer(config.Get())
+	i, err := NewContainer(config.Get())
+	if err != nil {
+		return err
+	}
 	server := do.MustInvoke[*http.Server](i)
 	go func() {
 		if err := server.ListenAndServe(); !errors.Is(err, http.ErrServerClosed) {
@@ -44,10 +51,18 @@ func Run(ctx context.Context) error {
 	return nil
 }
 
-func NewContainer(cfg config.Config) *do.Injector {
+func NewContainer(cfg config.Config) (*do.Injector, error) {
+	sqldb, err := db.Open(cfg.DBConnString())
+	if err != nil {
+		return nil, err
+	}
+	broom.Gather(func() { _ = sqldb.Close })
+
 	i := do.New()
 	do.Provide(i, NewServer)
 	do.ProvideNamedValue(i, "ServerAddress", cfg.ServerAddress)
 	do.Provide(i, NewResolver)
-	return i
+	do.Provide(i, repository.NewRepository)
+	do.ProvideValue(i, sqldb)
+	return i, nil
 }

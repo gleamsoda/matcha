@@ -1,0 +1,19 @@
+# https://docs.sqlc.dev/en/stable/reference/config.html
+version: "2"
+sql:
+  - schema: "db/migrations" # マイグレーションのディレクトリ OR 単一のSQLファイルへのパス OR パスのリスト
+    queries: "internal/core/repository/query" # SQLクエリのディレクトリ OR 単一のSQLファイルへのパス OR パスのリスト
+    engine: "postgresql"
+    gen:
+      go:
+        package: "sqlc"
+        out: "internal/core/repository/sqlc"
+        emit_result_struct_pointers: true
+        emit_params_struct_pointers: true
+        emit_pointers_for_null_types: true # (sql.NullString -> *string)
+        overrides:
+          - db_type: "uuid"
+            go_type:
+              import: "github.com/gofrs/uuid/v5"
+              package: "uuid"
+              type: "UUID"

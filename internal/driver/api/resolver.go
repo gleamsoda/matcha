@@ -4,6 +4,7 @@ import (
 	"github.com/samber/do"
 
 	"matcha/internal/core"
+	"matcha/internal/core/usecase"
 )
 
 // This file will not be regenerated automatically.
@@ -11,10 +12,15 @@ import (
 // It serves as dependency injection for your app, add any dependencies you require here.
 
 type Resolver struct {
-	users  []*core.User
-	issues []*core.Issue
+	issues     []*core.Issue
+	getUser    core.GetUserUsecase
+	createUser core.CreateUserUsecase
 }
 
 func NewResolver(i *do.Injector) (*Resolver, error) {
-	return &Resolver{}, nil
+	r := do.MustInvoke[core.Repository](i)
+	return &Resolver{
+		getUser:    usecase.NewGetUserUsecase(r),
+		createUser: usecase.NewCreateUserUsecase(r),
+	}, nil
 }

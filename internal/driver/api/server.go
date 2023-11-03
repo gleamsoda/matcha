@@ -8,7 +8,7 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/samber/do"
 
-	"matcha/internal/driver/api/gen"
+	"matcha/internal/driver/api/gqlgen"
 )
 
 func NewServer(i *do.Injector) (*http.Server, error) {
@@ -16,7 +16,7 @@ func NewServer(i *do.Injector) (*http.Server, error) {
 	r := chi.NewRouter()
 
 	r.Get("/", playground.Handler("GraphQL", "/query").ServeHTTP)
-	r.Post("/query", handler.NewDefaultServer(gen.NewExecutableSchema(gen.Config{Resolvers: resolver})).ServeHTTP)
+	r.Post("/query", handler.NewDefaultServer(gqlgen.NewExecutableSchema(gqlgen.Config{Resolvers: resolver})).ServeHTTP)
 
 	return &http.Server{
 		Handler: r,
