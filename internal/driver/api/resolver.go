@@ -18,9 +18,9 @@ type Resolver struct {
 }
 
 func NewResolver(i *do.Injector) (*Resolver, error) {
-	r := do.MustInvoke[core.Repository](i)
+	r := do.MustInvoke[core.RepositoryManager](i)
 	return &Resolver{
-		getUser:    usecase.NewGetUserUsecase(r),
-		createUser: usecase.NewCreateUserUsecase(r),
+		getUser:    usecase.NewGetUser(r),
+		createUser: usecase.NewCreateUser(r),
 	}, nil
 }

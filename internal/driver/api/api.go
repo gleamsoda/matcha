@@ -62,7 +62,7 @@ func NewContainer(cfg config.Config) (*do.Injector, error) {
 	do.Provide(i, NewServer)
 	do.ProvideNamedValue(i, "ServerAddress", cfg.ServerAddress)
 	do.Provide(i, NewResolver)
-	do.Provide(i, repository.NewRepository)
+	do.Provide(i, repository.NewManager)
 	do.ProvideValue(i, sqldb)
 	return i, nil
 }

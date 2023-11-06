@@ -10,35 +10,39 @@ import (
 )
 
 type (
-	CreateUserUsecase struct {
-		r core.Repository
+	CreateUser struct {
+		r core.RepositoryManager
 	}
-	GetUserUsecase struct {
-		r core.Repository
+	GetUser struct {
+		r core.RepositoryManager
 	}
 )
 
-func NewCreateUserUsecase(r core.Repository) *CreateUserUsecase {
-	return &CreateUserUsecase{
+func NewCreateUser(r core.RepositoryManager) *CreateUser {
+	return &CreateUser{
 		r: r,
 	}
 }
 
-func (uc *CreateUserUsecase) Execute(ctx context.Context, args *core.CreateUserParams) (*core.User, error) {
+var _ core.CreateUserUsecase = (*CreateUser)(nil)
+
+func (uc *CreateUser) Execute(ctx context.Context, args *core.CreateUserParams) (*core.User, error) {
 	hashedPassword, err := password.Hash(args.Password)
 	if err != nil {
 		return nil, err
 	}
 	u := core.NewUser(args.Username, args.Email, hashedPassword)
-	return uc.r.CreateUser(ctx, u)
+	return uc.r.User().Create(ctx, u)
 }
 
-func NewGetUserUsecase(r core.Repository) *GetUserUsecase {
-	return &GetUserUsecase{
+var _ core.GetUserUsecase = (*GetUser)(nil)
+
+func NewGetUser(r core.RepositoryManager) *GetUser {
+	return &GetUser{
 		r: r,
 	}
 }
 
-func (uc *GetUserUsecase) Execute(ctx context.Context, id uuid.UUID) (*core.User, error) {
-	return uc.r.GetUser(ctx, id)
+func (uc *GetUser) Execute(ctx context.Context, id uuid.UUID) (*core.User, error) {
+	return uc.r.User().Get(ctx, id)
 }

@@ -1,12 +1,10 @@
 package core
 
-import (
-	"context"
+import "context"
 
-	"github.com/gofrs/uuid/v5"
+type (
+	RepositoryManager interface {
+		User() UserRepository
+	}
+	TransactionFunc func(context.Context, RepositoryManager) error
 )
-
-type Repository interface {
-	CreateUser(ctx context.Context, u *User) (*User, error)
-	GetUser(ctx context.Context, id uuid.UUID) (*User, error)
-}

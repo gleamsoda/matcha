@@ -2,33 +2,29 @@ package repository
 
 import (
 	"context"
-	"database/sql"
 
 	"github.com/gofrs/uuid/v5"
-	"github.com/samber/do"
-	"github.com/uptrace/bun"
-	"github.com/uptrace/bun/dialect/pgdialect"
+	"github.com/stephenafamo/bob"
 
 	"matcha/internal/core"
 	"matcha/internal/core/repository/sqlc"
 )
 
-type Repository struct {
-	db   *sql.DB
-	bun  *bun.DB
+type User struct {
 	sqlc *sqlc.Queries
+	bob  bob.Executor
 }
 
-func NewRepository(i *do.Injector) (core.Repository, error) {
-	db := do.MustInvoke[*sql.DB](i)
-	return &Repository{
-		db:   db,
-		bun:  bun.NewDB(db, pgdialect.New()),
+func NewUser(db Executor) *User {
+	return &User{
 		sqlc: sqlc.New(db),
-	}, nil
+		bob:  bob.New(db),
+	}
 }
 
-func (r *Repository) CreateUser(ctx context.Context, u *core.User) (*core.User, error) {
+var _ core.UserRepository = (*User)(nil)
+
+func (r *User) Create(ctx context.Context, u *core.User) (*core.User, error) {
 	row, err := r.sqlc.CreateUser(ctx, &sqlc.CreateUserParams{
 		Username:       u.Username,
 		Email:          u.Email,
@@ -46,7 +42,7 @@ func (r *Repository) CreateUser(ctx context.Context, u *core.User) (*core.User, 
 	}, err
 }
 
-func (r *Repository) GetUser(ctx context.Context, id uuid.UUID) (*core.User, error) {
+func (r *User) Get(ctx context.Context, id uuid.UUID) (*core.User, error) {
 	row, err := r.sqlc.GetUser(ctx, id)
 	if err != nil {
 		return nil, err
