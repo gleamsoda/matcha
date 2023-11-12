@@ -4,6 +4,7 @@ go 1.21.2
 
 require (
 	github.com/99designs/gqlgen v0.17.39
+	github.com/aarondl/opt v0.0.0-20230114172057-b91f370c41f0
 	github.com/caarlos0/env/v9 v9.0.0
 	github.com/go-chi/chi/v5 v5.0.10
 	github.com/gofrs/uuid/v5 v5.0.0
@@ -19,6 +20,7 @@ require (
 )
 
 require (
+	github.com/aarondl/json v0.0.0-20221020222930-8b0db17ef1bf // indirect
 	github.com/agnivade/levenshtein v1.1.1 // indirect
 	github.com/cpuguy83/go-md2man/v2 v2.0.3 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect

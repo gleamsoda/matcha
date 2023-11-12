@@ -7,17 +7,17 @@ import (
 	"github.com/stephenafamo/bob"
 
 	"matcha/internal/core"
-	"matcha/internal/core/repository/sqlc"
+	sqlcgen "matcha/internal/core/repository/sqlc/gen"
 )
 
 type User struct {
-	sqlc *sqlc.Queries
+	sqlc *sqlcgen.Queries
 	bob  bob.Executor
 }
 
 func NewUser(db Executor) *User {
 	return &User{
-		sqlc: sqlc.New(db),
+		sqlc: sqlcgen.New(db),
 		bob:  bob.New(db),
 	}
 }
@@ -25,7 +25,7 @@ func NewUser(db Executor) *User {
 var _ core.UserRepository = (*User)(nil)
 
 func (r *User) Create(ctx context.Context, u *core.User) (*core.User, error) {
-	row, err := r.sqlc.CreateUser(ctx, &sqlc.CreateUserParams{
+	row, err := r.sqlc.CreateUser(ctx, &sqlcgen.CreateUserParams{
 		Username:       u.Username,
 		Email:          u.Email,
 		HashedPassword: u.HashedPassword,

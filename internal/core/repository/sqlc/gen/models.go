@@ -2,13 +2,20 @@
 // versions:
 //   sqlc v1.20.0
 
-package sqlc
+package sqlcgen
 
 import (
 	"time"
 
 	uuid "github.com/gofrs/uuid/v5"
 )
+
+type Issue struct {
+	ID          uuid.UUID
+	Title       string
+	Description string
+	CreatedAt   time.Time
+}
 
 type User struct {
 	ID             uuid.UUID

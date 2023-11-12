@@ -38,6 +38,10 @@ func (m *Manager) User() core.UserRepository {
 	return NewUser(m.e)
 }
 
+func (m *Manager) Issue() core.IssueRepository {
+	return NewIssue(m.e)
+}
+
 func (m *Manager) Transaction(ctx context.Context, fn core.TransactionFunc) error {
 	tx, err := m.r.BeginTx(ctx, nil)
 	if err != nil {

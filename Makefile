@@ -1,9 +1,12 @@
 APP_NAME=matcha
 
-.PHONY: gqlgen network migrate-create migrate-up migrate-down
+.PHONY: gqlgen bobgen network migrate-create migrate-up migrate-down
 
 gqlgen:
 	@gqlgen
+
+bobgen:
+	@PSQL_DSN=postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/$(APP_NAME)?sslmode=disable go run github.com/stephenafamo/bob/gen/bobgen-psql@latest
 
 network:
 	@docker network create matcha-network

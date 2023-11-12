@@ -1,0 +1,6 @@
+no_factory: true
+psql:
+  output: "internal/core/repository/bob/gen"
+  pkgname: "bobgen"
+  only:
+    issues:

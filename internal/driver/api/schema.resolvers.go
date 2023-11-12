@@ -25,9 +25,10 @@ func (r *mutationResolver) CreateUser(ctx context.Context, input model.CreateUse
 
 // CreateIssue is the resolver for the createIssue field.
 func (r *mutationResolver) CreateIssue(ctx context.Context, input model.CreateIssue) (*core.Issue, error) {
-	i := core.NewIssue(input.Title, input.Description)
-	r.issues = append(r.issues, i)
-	return i, nil
+	return r.createIssue.Execute(ctx, &core.CreateIssueParams{
+		Title:       input.Title,
+		Description: input.Description,
+	})
 }
 
 // User is the resolver for the user field.
@@ -37,7 +38,7 @@ func (r *queryResolver) User(ctx context.Context, id uuid.UUID) (*core.User, err
 
 // Issues is the resolver for the issues field.
 func (r *queryResolver) Issues(ctx context.Context) ([]*core.Issue, error) {
-	return r.issues, nil
+	return r.listIssues.Execute(ctx)
 }
 
 // Mutation returns gqlgen.MutationResolver implementation.

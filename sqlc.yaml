@@ -2,12 +2,12 @@
 version: "2"
 sql:
   - schema: "db/migrations" # マイグレーションのディレクトリ OR 単一のSQLファイルへのパス OR パスのリスト
-    queries: "internal/core/repository/query" # SQLクエリのディレクトリ OR 単一のSQLファイルへのパス OR パスのリスト
+    queries: "internal/core/repository/sqlc/query" # SQLクエリのディレクトリ OR 単一のSQLファイルへのパス OR パスのリスト
     engine: "postgresql"
     gen:
       go:
-        package: "sqlc"
-        out: "internal/core/repository/sqlc"
+        package: "sqlcgen"
+        out: "internal/core/repository/sqlc/gen"
         emit_result_struct_pointers: true
         emit_params_struct_pointers: true
         emit_pointers_for_null_types: true # (sql.NullString -> *string)

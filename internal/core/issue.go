@@ -1,6 +1,10 @@
 package core
 
-import "github.com/gofrs/uuid/v5"
+import (
+	"context"
+
+	"github.com/gofrs/uuid/v5"
+)
 
 type Issue struct {
 	ID          uuid.UUID `json:"id"`
@@ -14,3 +18,20 @@ func NewIssue(title, description string) *Issue {
 		Description: description,
 	}
 }
+
+type (
+	CreateIssueUsecase interface {
+		Execute(ctx context.Context, args *CreateIssueParams) (*Issue, error)
+	}
+	CreateIssueParams struct {
+		Title       string
+		Description string
+	}
+	ListIssuesUsecase interface {
+		Execute(ctx context.Context) ([]*Issue, error)
+	}
+	IssueRepository interface {
+		Create(ctx context.Context, u *Issue) (*Issue, error)
+		List(ctx context.Context) ([]*Issue, error)
+	}
+)
