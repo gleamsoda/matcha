@@ -34,14 +34,14 @@ func NewRepository(i *do.Injector) (core.Repository, error) {
 	}, nil
 }
 
+func (m *Repository) Transaction() core.Transaction {
+	return m.txn
+}
+
 func (m *Repository) User() core.UserRepository {
 	return NewUser(m.exec)
 }
 
 func (m *Repository) Issue() core.IssueRepository {
 	return NewIssue(m.exec)
-}
-
-func (m *Repository) Transaction() core.Transaction {
-	return m.txn
 }

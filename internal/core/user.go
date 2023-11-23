@@ -33,8 +33,4 @@ type (
 	GetUserUsecase interface {
 		Execute(ctx context.Context, id uuid.UUID) (*User, error)
 	}
-	UserRepository interface {
-		Create(ctx context.Context, u *User) (*User, error)
-		Get(ctx context.Context, id uuid.UUID) (*User, error)
-	}
 )

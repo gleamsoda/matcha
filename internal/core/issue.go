@@ -30,8 +30,4 @@ type (
 	ListIssuesUsecase interface {
 		Execute(ctx context.Context) ([]*Issue, error)
 	}
-	IssueRepository interface {
-		Create(ctx context.Context, u *Issue) (*Issue, error)
-		List(ctx context.Context) ([]*Issue, error)
-	}
 )
