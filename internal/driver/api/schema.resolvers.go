@@ -6,12 +6,11 @@ package api
 
 import (
 	"context"
-
-	uuid "github.com/gofrs/uuid/v5"
-
 	"matcha/internal/core"
 	"matcha/internal/driver/api/gqlgen"
 	"matcha/internal/driver/api/model"
+
+	uuid "github.com/gofrs/uuid/v5"
 )
 
 // CreateUser is the resolver for the createUser field.

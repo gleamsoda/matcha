@@ -11,14 +11,14 @@ import (
 
 type (
 	CreateUser struct {
-		r core.RepositoryManager
+		r core.Repository
 	}
 	GetUser struct {
-		r core.RepositoryManager
+		r core.Repository
 	}
 )
 
-func NewCreateUser(r core.RepositoryManager) *CreateUser {
+func NewCreateUser(r core.Repository) *CreateUser {
 	return &CreateUser{
 		r: r,
 	}
@@ -37,7 +37,7 @@ func (uc *CreateUser) Execute(ctx context.Context, args *core.CreateUserParams) 
 
 var _ core.GetUserUsecase = (*GetUser)(nil)
 
-func NewGetUser(r core.RepositoryManager) *GetUser {
+func NewGetUser(r core.Repository) *GetUser {
 	return &GetUser{
 		r: r,
 	}

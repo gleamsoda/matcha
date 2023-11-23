@@ -8,14 +8,14 @@ import (
 
 type (
 	CreateIssue struct {
-		r core.RepositoryManager
+		r core.Repository
 	}
 	ListIssues struct {
-		r core.RepositoryManager
+		r core.Repository
 	}
 )
 
-func NewCreateIssue(r core.RepositoryManager) *CreateIssue {
+func NewCreateIssue(r core.Repository) *CreateIssue {
 	return &CreateIssue{
 		r: r,
 	}
@@ -30,7 +30,7 @@ func (uc *CreateIssue) Execute(ctx context.Context, args *core.CreateIssueParams
 
 var _ core.ListIssuesUsecase = (*ListIssues)(nil)
 
-func NewListIssues(r core.RepositoryManager) *ListIssues {
+func NewListIssues(r core.Repository) *ListIssues {
 	return &ListIssues{
 		r: r,
 	}
