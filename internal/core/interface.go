@@ -3,9 +3,12 @@ package core
 import "context"
 
 type (
-	RepositoryManager interface {
+	Repository interface {
 		User() UserRepository
 		Issue() IssueRepository
 	}
-	TransactionFunc func(context.Context, RepositoryManager) error
+	Transaction interface {
+		Run(ctx context.Context, fn TransactionFunc) error
+	}
+	TransactionFunc func(context.Context, Repository) error
 )
